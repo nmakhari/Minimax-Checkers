@@ -104,8 +104,7 @@ public:
        }
 
        //removed the check of choosing an empty square
-       //cout << "Got here\n";
-       //cout << cr <<" "<<cc <<" "<< mr << " " << mc << " " << currentstate[mr][mc] << "\n";
+
        if(currentstate[mr][mc]!=0){
            return -1;//this -1 return value indicates that the selected move spot is already occupied and thus the move is not valid
        }
@@ -266,13 +265,7 @@ public:
 
        cout << "Moving " << cr << " "<< cc << " to " << mr << " " << mc << "\n";
 
-       /*cout << "Before movePiece\n";
-       for (int i = 0; i < 8; i++) { //Idk if we should use memcpy
-           for (int j = 0; j < 8; j++) {
-               cout << newState[i][j] << " ";
-           }
-           cout << "\n";
-       }*/
+
 
        int columnDirection =0, rowDirection=0;
        if(mr==cr+1){//if the approved move wants to move into a king postion
@@ -332,13 +325,6 @@ public:
            movePiece(newState, cc, cr, mc, mr);//moves the piece, this move is already valid,otherwise the funciton would not have run
        }
 
-       /*cout << "After movePiece\n";
-       for (int i = 0; i < 8; i++) { //Idk if we should use memcpy
-           for (int j = 0; j < 8; j++) {
-               cout << newState[i][j] << " ";
-           }
-           cout << "\n";
-       }*/
 
    }
 
@@ -450,7 +436,7 @@ public:
        int *action= new int[4];//sets the initial piece position to the first two spots for action pointer
        action[0]=position[0];
        action[1]=position[1];
-       //cout <<"Got here\n";
+
        /*
        0 - move up right
        1- move up left
@@ -460,12 +446,13 @@ public:
        5 - jump up left
        6 - jump down right
        7 - jump down left
-       8 - same spot
+       //in order to implement double attacks add the 8th case where it can stay in one spot
+
        */
 
        while (births == 0 && position[1]<=7 && position[0]<=7) {
            findNext(position, currentState, turn);
-         //this might cause huge issues
+
 
            action[0]=position[0];
            action[1]=position[1];
@@ -497,9 +484,7 @@ public:
                    case 7: action[2]=position[0]-2;
                            action[3]=position[1]+2;
                            break;
-                   /*case 8: action[2]=position[0];//check the check move function for actions regarding this move
-                           action[3]=position[1];
-                           break;*/
+
                    }
                    //cout <<"Got here\n";
                    if(validMove(action, currentState, turn)==1){
@@ -518,26 +503,11 @@ public:
                            }
                        }
 
-                       /*cout <<"Before:\n";
-                       for (int i = 0; i < 8; i++) {
-                           for (int j = 0; j <8; j++) {
-                               cout << childBoard[i][j] << " ";
-                           }
-                           cout << "\n";
-                       }*/
 
                        newBoard(action, childBoard, turn);
 
-                       /*cout << "After:\n";
-                       for (int i = 0; i < 8; i++) {
-                           for (int j = 0; j <8; j++) {
-                               cout << childBoard[i][j] << " ";
-                           }
-                           cout << "\n";
-                       } cout << "\n";*/
 
                        //CALL GET BOARD
-                       cout<<"Were making kids\n";
                        getBoard(childBoard);
 
                        for (int i = 0; i < 8; i++) {
@@ -1030,8 +1000,7 @@ int main(void) {
    {1,0,1,0,1,0,1,0}};
 
    Node f(2,0,board);
-   //f.project(f.place,board,f.isMax);
-   //printBoard(f,0);
+
    cout << minimax(f,f.childIndex,-10001,10001) << "\n";
    return 0;
 }
